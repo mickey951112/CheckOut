@@ -42,15 +42,25 @@ public class CheckOut {
     public static void main(String[] args) {
         // Example usage with pricing rules
         Map<Character, PricingRule> pricingRules = new HashMap<>();
-        pricingRules.put('A', new PricingRule(50, 3, 130));
-        pricingRules.put('B', new PricingRule(30, 2, 45));
-        pricingRules.put('C', new PricingRule(20));
+        pricingRules.put('A', new PricingRule(45, 2, 80));
+        pricingRules.put('B', new PricingRule(30, 3, 70));
+        pricingRules.put('C', new PricingRule(20, 3, 50));
         pricingRules.put('D', new PricingRule(15));
+        pricingRules.put('E', new PricingRule(50, 2, 90));
 
         CheckOut co = new CheckOut(pricingRules);
         co.scan('A');
         co.scan('B');
         co.scan('A');
+        co.scan('A');
+        co.scan('B');
+        co.scan('C');
+        co.scan('D');
+        co.scan('E');
+        co.scan('C');
+        co.scan('E');
+        co.scan('C');
+        co.scan('D');
         int price = co.total();
 
         System.out.println("Total Price: " + price);

@@ -9,29 +9,38 @@ public class TestCheckOut {
     // Test case to verify total prices based on provided pricing rules
     @Test
     public void testTotals() {
-        // Set up pricing rules for items A, B, C, and D
+        // Set up pricing rules for items A, B, C, D, and E
         Map<Character, PricingRule> pricingRules = new HashMap<>();
-        pricingRules.put('A', new PricingRule(50, 3, 130));
-        pricingRules.put('B', new PricingRule(30, 2, 45));
-        pricingRules.put('C', new PricingRule(20));
+        pricingRules.put('A', new PricingRule(45, 2, 80));
+        pricingRules.put('B', new PricingRule(30, 3, 70));
+        pricingRules.put('C', new PricingRule(20, 3, 50));
         pricingRules.put('D', new PricingRule(15));
+        pricingRules.put('E', new PricingRule(50, 2, 90));
 
         // Verify total prices for different combinations of items
         assertEquals(0, price("", pricingRules));
-        assertEquals(50, price("A", pricingRules));
-        assertEquals(80, price("AB", pricingRules));
-        assertEquals(115, price("CDBA", pricingRules));
+        assertEquals(45, price("A", pricingRules));
+        assertEquals(75, price("AB", pricingRules));
+        assertEquals(110, price("CDBA", pricingRules));
 
-        assertEquals(100, price("AA", pricingRules));
-        assertEquals(130, price("AAA", pricingRules));
-        assertEquals(180, price("AAAA", pricingRules));
-        assertEquals(230, price("AAAAA", pricingRules));
-        assertEquals(260, price("AAAAAA", pricingRules));
+        assertEquals(80, price("AA", pricingRules));
+        assertEquals(125, price("AAA", pricingRules));
+        assertEquals(160, price("AAAA", pricingRules));
+        assertEquals(205, price("AAAAA", pricingRules));
+        assertEquals(240, price("AAAAAA", pricingRules));
 
-        assertEquals(160, price("AAAB", pricingRules));
-        assertEquals(175, price("AAABB", pricingRules));
-        assertEquals(190, price("AAABBD", pricingRules));
-        assertEquals(190, price("DABABA", pricingRules));
+        assertEquals(60, price("BB", pricingRules));
+        assertEquals(70, price("BBB", pricingRules));
+        assertEquals(100, price("BBBB", pricingRules));
+        assertEquals(130, price("BBBBB", pricingRules));
+        assertEquals(140, price("BBBBBB", pricingRules));
+
+        assertEquals(155, price("AAAB", pricingRules));
+        assertEquals(185, price("AAABB", pricingRules));
+        assertEquals(200, price("AAABBD", pricingRules));
+        assertEquals(250, price("AAABBDE", pricingRules));
+        assertEquals(290, price("AAABBDEE", pricingRules));
+        assertEquals(300, price("AABBCCDDEE", pricingRules));
     }
 
     // Test case to verify incremental total calculation
@@ -39,10 +48,11 @@ public class TestCheckOut {
     public void testIncremental() {
         // Set up pricing rules for items A, B, C, and D
         Map<Character, PricingRule> pricingRules = new HashMap<>();
-        pricingRules.put('A', new PricingRule(50, 3, 130));
-        pricingRules.put('B', new PricingRule(30, 2, 45));
-        pricingRules.put('C', new PricingRule(20));
+        pricingRules.put('A', new PricingRule(45, 2, 80));
+        pricingRules.put('B', new PricingRule(30, 3, 70));
+        pricingRules.put('C', new PricingRule(20, 3, 50));
         pricingRules.put('D', new PricingRule(15));
+        pricingRules.put('E', new PricingRule(50, 2, 90));
 
         // Create a new CheckOut instance with pricing rules
         CheckOut co = new CheckOut(pricingRules);
@@ -50,15 +60,19 @@ public class TestCheckOut {
         // Verify total prices after scanning different items incrementally
         assertEquals(0, co.total());
         co.scan('A');
-        assertEquals(50, co.total());
+        assertEquals(45, co.total());
         co.scan('B');
-        assertEquals(80, co.total());
+        assertEquals(75, co.total());
         co.scan('A');
-        assertEquals(130, co.total());
+        assertEquals(110, co.total());
         co.scan('A');
-        assertEquals(160, co.total());
+        assertEquals(155, co.total());
         co.scan('B');
-        assertEquals(175, co.total());
+        assertEquals(185, co.total());
+        co.scan('A');
+        assertEquals(220, co.total());
+        co.scan('B');
+        assertEquals(230, co.total());
     }
 
     // Helper method to calculate total price based on goods and pricing rules
