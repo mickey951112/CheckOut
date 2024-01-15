@@ -1,3 +1,4 @@
+// CheckOut.java
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public class CheckOut {
                 totalPrice += pricingRules.get(item).calculatePrice(count);
             } else {
                 // Default to individual unit price if no special pricing rule
-                totalPrice += count * 50; // Assuming default unit price is 50 cents
+                totalPrice += new DefaultPricingRule(50).calculatePrice(count);
             }
         }
 
@@ -42,11 +43,11 @@ public class CheckOut {
     public static void main(String[] args) {
         // Example usage with pricing rules
         Map<Character, PricingRule> pricingRules = new HashMap<>();
-        pricingRules.put('A', new PricingRule(45, 2, 80));
-        pricingRules.put('B', new PricingRule(30, 3, 70));
-        pricingRules.put('C', new PricingRule(20, 3, 50));
-        pricingRules.put('D', new PricingRule(15));
-        pricingRules.put('E', new PricingRule(50, 2, 90));
+        pricingRules.put('A', new SpecialPricingRule(45, 2, 80));
+        pricingRules.put('B', new SpecialPricingRule(30, 3, 70));
+        pricingRules.put('C', new SpecialPricingRule(20, 3, 50));
+        pricingRules.put('D', new DefaultPricingRule(15));
+        pricingRules.put('E', new SpecialPricingRule(50, 2, 90));
 
         CheckOut co = new CheckOut(pricingRules);
         co.scan('A');
@@ -64,43 +65,5 @@ public class CheckOut {
         int price = co.total();
 
         System.out.println("Total Price: " + price);
-    }
-}
-
-// PricingRule class to represent the pricing details for an item
-class PricingRule {
-    private int unitPrice;
-    private int specialQuantity;
-    private int specialPrice;
-
-    // Constructor for a pricing rule with a special offer
-    public PricingRule(int unitPrice, int specialQuantity, int specialPrice) {
-        this.unitPrice = unitPrice;
-        this.specialQuantity = specialQuantity;
-        this.specialPrice = specialPrice;
-    }
-
-    // Constructor for a pricing rule without a special offer
-    public PricingRule(int unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-
-    // Method to calculate the total price based on the quantity and pricing rule
-    public int calculatePrice(int quantity) {
-        int totalPrice = 0;
-
-        // Check if there is a special offer and the quantity is sufficient
-        if (specialQuantity > 0 && quantity >= specialQuantity) {
-            int specialSets = quantity / specialQuantity;
-            int remainingItems = quantity % specialQuantity;
-
-            // Calculate the total price with the special offer
-            totalPrice = specialSets * specialPrice + remainingItems * unitPrice;
-        } else {
-            // Calculate the total price without a special offer
-            totalPrice = quantity * unitPrice;
-        }
-
-        return totalPrice;
     }
 }

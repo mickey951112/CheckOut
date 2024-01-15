@@ -1,3 +1,5 @@
+// CheckOut.java
+// This class implements the test of the CheckOut Class with some test cases.
 import org.junit.Test;
 import static org.junit.Assert.*;
 import java.util.HashMap;
@@ -11,11 +13,11 @@ public class TestCheckOut {
     public void testTotals() {
         // Set up pricing rules for items A, B, C, D, and E
         Map<Character, PricingRule> pricingRules = new HashMap<>();
-        pricingRules.put('A', new PricingRule(45, 2, 80));
-        pricingRules.put('B', new PricingRule(30, 3, 70));
-        pricingRules.put('C', new PricingRule(20, 3, 50));
-        pricingRules.put('D', new PricingRule(15));
-        pricingRules.put('E', new PricingRule(50, 2, 90));
+        pricingRules.put('A', new SpecialPricingRule(45, 2, 80));
+        pricingRules.put('B', new SpecialPricingRule(30, 3, 70));
+        pricingRules.put('C', new SpecialPricingRule(20, 3, 50));
+        pricingRules.put('D', new DefaultPricingRule(15));
+        pricingRules.put('E', new SpecialPricingRule(50, 2, 90));
 
         // Verify total prices for different combinations of items
         assertEquals(0, price("", pricingRules));
@@ -46,13 +48,13 @@ public class TestCheckOut {
     // Test case to verify incremental total calculation
     @Test
     public void testIncremental() {
-        // Set up pricing rules for items A, B, C, and D
+        // Set up pricing rules for items A, B, C, D, and E
         Map<Character, PricingRule> pricingRules = new HashMap<>();
-        pricingRules.put('A', new PricingRule(45, 2, 80));
-        pricingRules.put('B', new PricingRule(30, 3, 70));
-        pricingRules.put('C', new PricingRule(20, 3, 50));
-        pricingRules.put('D', new PricingRule(15));
-        pricingRules.put('E', new PricingRule(50, 2, 90));
+        pricingRules.put('A', new SpecialPricingRule(45, 2, 80));
+        pricingRules.put('B', new SpecialPricingRule(30, 3, 70));
+        pricingRules.put('C', new SpecialPricingRule(20, 3, 50));
+        pricingRules.put('D', new DefaultPricingRule(15));
+        pricingRules.put('E', new SpecialPricingRule(50, 2, 90));
 
         // Create a new CheckOut instance with pricing rules
         CheckOut co = new CheckOut(pricingRules);
